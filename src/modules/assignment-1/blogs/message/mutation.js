@@ -7,7 +7,7 @@ export const blogMessageResolver = {
       id: String(users.length + 1),
       name,
       email,
-      createdAt: new Date().toISOString,
+      createdAt: new Date().toISOString(),
     };
 
     users.push(newUser);
@@ -20,7 +20,7 @@ export const blogMessageResolver = {
       title,
       authorId,
       content,
-      createdAt: new Date().toISOString,
+      createdAt: new Date().toISOString(),
     };
     posts.push(newPost);
     return newPost;
@@ -32,7 +32,7 @@ export const blogMessageResolver = {
       text,
       authorId,
       postId,
-      createdAt: new Date().toISOString,
+      createdAt: new Date().toISOString(),
     };
     comments.push(newComment);
     return newComment;
