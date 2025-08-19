@@ -11,6 +11,7 @@ type Post {
   content: String!
   author: User
   comments: [Comment!]!
+  createdAt:String!
 }
 
 type Comment {
@@ -20,17 +21,54 @@ type Comment {
   post: Post!
 }
 
+type PageInfo {
+  totalCount: Int!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type PostPage {
+  posts: [Post!]!
+  PageInfo: PageInfo!
+}
+extend type Query {
+  paginatedPosts(page: Int!, limit: Int!): PostPage!
+}
+
+type UserError {
+  message: String!
+  code: String!
+}
+enum PostSortField {
+  createdAt
+  title
+  id
+}
+enum SortOrder {
+  asc
+  desc
+}
+union UserResult = User | UserError
+
 type Query {
   users: [User!]!
-  user(id: ID!): User
+  user(id: ID!): UserResult
   posts: [Post!]!
   post(id: ID!): Post
   comments: [Comment!]!
   comment(id: ID!): Comment
+  paginatedPosts(
+    page: Int!
+    limit: Int!
+    sortBy: PostSortField
+    sortOrder: SortOrder
+  ): PostPage!
 }
 
 type Mutation {
   createUser(name: String!, email: String!): User!
   createPost(title: String!, content: String!, authorId: ID!): Post!
   createComment(text: String!, authorId: ID!, postId: ID!): Comment!
+  updateUser(id: ID!, name: String!, email: String!): User!
+  deleteComment(id: ID!): Comment!
 }
