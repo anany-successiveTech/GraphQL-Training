@@ -2,8 +2,10 @@
 
 import { blogQueryResolver } from "./query.js";
 import { blogMessageResolver } from "./mutation.js";
+import { blogSubscriptionResolvers } from "./subscription.js";
 
 export const blogMessageModule = {
   Query: blogQueryResolver,
   Mutation: blogMessageResolver,
+  Subscription: blogSubscriptionResolvers,
 };

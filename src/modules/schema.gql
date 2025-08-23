@@ -1,7 +1,41 @@
 type Query {
+  users: [User!]!
+  user(id: ID!): UserResult
+  posts: [Post!]!
   messages: [Message]!
+  post(id: ID!): Post
+  comments: [Comment!]!
+  comment(id: ID!): Comment
+  paginatedPosts(
+    page: Int!
+    limit: Int!
+    sortBy: PostSortField
+    sortOrder: SortOrder
+  ): PostPage!
 }
 
+type Error {
+  message: String!
+  code: Int!
+}
+
+union UserResult = User | Error
+
 type Mutation {
+  # This is the assignment-2
+  registerUser(name: String!, email: String!): UserResult
+  createPost(title: String!, content: String!, authorId: ID!): Post!
+  createComment(text: String!, authorId: ID!, postId: ID!): Comment!
   postMessage(content: String!, author: String!): Message!
+  updateUser(id: ID!, name: String!, email: String!): User!
+  deleteComment(id: ID!): Comment!
+  loginUser(email: String!, password: String!): UserResult
+  setUserPresence(userId: ID!, isOnline: Boolean!): Presence
+}
+
+type Subscription {
+  commentPosted: Comment!
+  userJoined: User!
+  userLeft: User!
+  # messageSent: Message!
 }

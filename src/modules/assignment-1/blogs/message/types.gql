@@ -3,6 +3,7 @@ type User {
   name: String!
   email: String!
   posts: [Post!]!
+  isOnline: Boolean!
 }
 
 type Post {
@@ -11,7 +12,12 @@ type Post {
   content: String!
   author: User
   comments: [Comment!]!
-  createdAt:String!
+  createdAt: String!
+}
+
+type Presence {
+  userId: ID!
+  isOnline: Boolean!
 }
 
 type Comment {
@@ -29,46 +35,34 @@ type PageInfo {
 
 type PostPage {
   posts: [Post!]!
-  PageInfo: PageInfo!
-}
-extend type Query {
-  paginatedPosts(page: Int!, limit: Int!): PostPage!
+  pageInfo: PageInfo!
 }
 
-type UserError {
-  message: String!
-  code: String!
-}
+# extend type Query {
+#   paginatedPosts(page: Int!, limit: Int!): PostPage!
+# }
+
+# type Error {
+#   message: String!
+#   code: Int!
+# }
+
 enum PostSortField {
   createdAt
   title
   id
 }
+
 enum SortOrder {
   asc
   desc
 }
-union UserResult = User | UserError
 
-type Query {
-  users: [User!]!
-  user(id: ID!): UserResult
-  posts: [Post!]!
-  post(id: ID!): Post
-  comments: [Comment!]!
-  comment(id: ID!): Comment
-  paginatedPosts(
-    page: Int!
-    limit: Int!
-    sortBy: PostSortField
-    sortOrder: SortOrder
-  ): PostPage!
-}
+# extend type Mutation {
+#   setUserPresence(userId: ID!, isOnline: Boolean!): Presence!
+# }
 
-type Mutation {
-  createUser(name: String!, email: String!): User!
-  createPost(title: String!, content: String!, authorId: ID!): Post!
-  createComment(text: String!, authorId: ID!, postId: ID!): Comment!
-  updateUser(id: ID!, name: String!, email: String!): User!
-  deleteComment(id: ID!): Comment!
-}
+# union UserResult = User | Error
+# union PostResult = Post | Error
+# union CommentResult = Comment | Error
+# union PostPageResult = PostPage | Error
